@@ -1,0 +1,22 @@
+func uploadImgToAWSS3(img:UIImage){
+        let remoteName = "FILE_PATH+FILE_NAME"
+        let S3BucketName = "BUCKET_NAME"
+        let imgData = img.pngData()!
+        
+        let transferManager = AWSS3TransferUtility.default()
+        
+        let expression = AWSS3TransferUtilityUploadExpression()
+        expression.setValue("public-read", forRequestHeader: "x-amz-acl")
+        
+        transferManager.uploadData(imgData, bucket: S3BucketName, key: remoteName, contentType: "image/png", expression: expression) { (awsTask, err) in
+            if let err = err {
+                print(err.localizedDescription)
+                return
+            }
+            let url = AWSS3.default().configuration.endpoint.url
+            let publicURL = url?.appendingPathComponent(S3BucketName).appendingPathComponent(remoteName)
+            if let absoluteString = publicURL?.absoluteString {
+                
+            }
+        }
+    }
