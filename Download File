@@ -1,0 +1,13 @@
+func awsDownload(url:URL){
+        let remoteName = "FILE_PATH+FILE_NAME"
+        let S3BucketName = "BUCKET_NAME"
+        
+        let transferManager = AWSS3TransferUtility.default()
+        transferManager.downloadData(fromBucket: S3BucketName, key: remoteName, expression: nil) { (task, url, data, err) in
+            if let err = err {
+                print(err.localizedDescription)
+                return
+            }
+            let img = UIImage(data: data ?? Data())
+        }        
+    }
